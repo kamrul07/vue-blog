@@ -7,8 +7,8 @@
 
 <template>
 <navigation />
-<bloglist />  
-
+ 
+<RouterView :key="$route.fullPath" />
 </template>
 
 <style scoped>

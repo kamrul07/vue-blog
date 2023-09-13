@@ -1,8 +1,18 @@
 <script setup>
-   import { ref } from 'vue';
+   import { ref ,onBeforeMount } from 'vue';
    import axios from 'axios';
+ 
+   defineProps( {
+    title : String,
+ } )
    const blogList = ref();
-   getBloglist();
+
+   
+   onBeforeMount(() => {
+      getBloglist();
+    
+   })
+
    async function getBloglist() {
       let url = "https://basic-blog.teamrabbil.com/api/post-newest";
       let res=  await axios.get(url);
@@ -21,13 +31,14 @@
 </script>
 
 <template>
+   {{ title }}
 <section class="pt-20 lg:pt-[120px] pb-10 lg:pb-20">
    <div class="container">
       <div class="flex flex-wrap justify-center -mx-4">
          <div class="w-full px-4">
             <div class="text-center mx-auto mb-[60px] lg:mb-20 max-w-[510px]">
-               <span class="font-semibold text-lg text-primary mb-2 block">
-               Our Blogs
+               <span class="block mb-2 text-lg font-semibold text-primary">
+               Our Blogss
                </span>
                <h2
                   class="
@@ -49,49 +60,28 @@
          </div>
       </div>
       <div class="flex flex-wrap -mx-4">
-         <div class="w-full md:w-1/2 lg:w-1/3 px-4" v-for="item in blogList" :key="item.id">
+         <div class="w-full px-4 md:w-1/2 lg:w-1/3" v-for="item in blogList" :key="item.id">
             <div class="max-w-[370px] mx-auto mb-10">
-               <div class="rounded overflow-hidden mb-8">
+               <div class="mb-8 overflow-hidden rounded">
+
+                  <router-link :to="{name:'blog' , params:{'id': item.id  }}" >
                   <img
                      :src="item.img"
                      alt="image"
                      class="w-full"
                      />
+                  </router-link>  
                </div>
                <div>
                   <span
-                     class="
-                     bg-primary
-                     rounded
-                     inline-block
-                     text-center
-                     px-4
-                     text-xs
-                     leading-loose
-                     font-semibold
-                     text-black
-                     mb-1
-                     "
+                     class="inline-block px-4 mb-1 text-xs font-semibold leading-loose text-center text-black rounded bg-primary"
                      >
                      <strong>প্রকাশের সময় :</strong>{{ formateDate(item.created_at)  }}
                   </span>
                   <h3>
-                     <a
-                        href="javascript:void(0)"
-                        class="
-                        font-semibold
-                        text-xl
-                        sm:text-2xl
-                        lg:text-xl
-                        xl:text-2xl
-                        mb-4
-                        inline-block
-                        text-dark
-                        hover:text-primary
-                        "
-                        >
+                     <router-link :to="{name:'blog' , params:{'id': item.id  }}" class="inline-block mb-4 text-xl font-semibold sm:text-2xl lg:text-xl xl:text-2xl text-dark hover:text-primary" >
                      {{ item.title  }}
-                     </a>
+                  </router-link>
                   </h3>
                   <p class="text-base text-body-color">
                      {{ item.short  }}
