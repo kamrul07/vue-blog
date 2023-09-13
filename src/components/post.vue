@@ -18,7 +18,7 @@ async function getpostDetails() {
     let url = "https://basic-blog.teamrabbil.com/api/post-details/" + route.params.id;
     let res = await axios.get(url);
 
-    if (res.status == 200) {
+    if (res.status == 200 && res.data.postDetails) {
         postDetails.post_title = res.data.postDetails.title;
         postDetails.post_description = res.data.postDetails.content;
         postDetails.post_img = res.data.postDetails.img;
@@ -36,7 +36,7 @@ function formateDate(date) {
 
 </script>
 <template>
-    <section class="pt-20 lg:pt-[120px] pb-10 lg:pb-20">
+    <section v-show="postDetails.post_title != ' '" class="pt-20 lg:pt-[120px] pb-10 lg:pb-20">
         <div class="container">
             <div class="flex flex-wrap justify-center -mx-4">
                 <div class="w-full px-4">
@@ -59,5 +59,10 @@ function formateDate(date) {
                 </div>
             </div>
         </div>
+    </section>
+    <section v-show="postDetails.post_title == ' ' " >
+        <h2 class="mb-4 text-xl font-semibold text-center sm:text-2xl lg:text-xl xl:text-2xl text-dark hover:text-primary">
+            No blog details found for this post
+        </h2>
     </section>
 </template>
